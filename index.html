@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06111f">
+<title>Baba Yaga | Detetive</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#06111f;--panel:#0b1b2d;--line:#173653;--blue:#229cf4;--muted:#9ab3ce;--text:#f3f8ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#102b46 0,#06111f 55%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:760px;margin:auto;padding:22px 16px 36px}.brand{border:1px solid var(--line);border-radius:22px;padding:24px 20px;background:linear-gradient(135deg,#102b45,#071321);text-align:center;box-shadow:0 16px 50px #0005}
+.mark{font-size:34px}.brand h1{margin:6px 0;font-size:clamp(27px,6vw,42px);letter-spacing:1px}.brand p{margin:0;color:#9bd5ff;letter-spacing:3px;font-size:12px}
+.search{display:flex;gap:8px;margin:18px 0 8px;background:var(--panel);border:1px solid #214665;padding:8px;border-radius:15px}
+input{min-width:0;flex:1;background:transparent;border:0;color:var(--text);font-size:16px;padding:10px;outline:none}button{border:0;border-radius:11px;background:var(--blue);color:white;font-weight:700;padding:12px 15px;font-size:15px;cursor:pointer}
+.note{color:var(--muted);font-size:13px;margin:8px 4px 22px}.section{margin-top:22px}.section h2{font-size:20px;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{padding:15px;background:linear-gradient(145deg,#0c2034,#081522);border:1px solid var(--line);border-radius:15px;color:var(--text);text-align:left}.tile b{display:block;font-size:16px;margin-bottom:5px}.tile span{color:var(--muted);font-size:13px;line-height:1.4}.safe{margin-top:18px;padding:15px;border:1px solid var(--line);border-radius:15px;color:var(--muted);font-size:13px;line-height:1.5}.safe strong{color:#dff4ff}.footer{text-align:center;color:#7895b3;font-size:12px;margin-top:24px}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<main>
+  <header class="brand">
+    <div class="mark">⌕</div>
+    <h1>BABA YAGA</h1>
+    <p>DETETIVE VIRTUAL</p>
+  </header>
+  <form id="searchForm" class="search">
+    <input id="term" placeholder="Digite um termo para pesquisar…" autocomplete="off" aria-label="Termo de pesquisa">
+    <button type="submit" aria-label="Enviar pesquisa">⌕</button>
+  </form>
+  <div class="note">Digite um termo e envie para o bot. Os comandos e as consultas continuam sendo processados pelo seu bot.</div>
+  <section class="section">
+    <h2>Atalhos de pesquisa</h2>
+    <div class="grid">
+      <button class="tile" data-term="documentos"><b>▤ Documentos</b><span>Consultar informações por meio dos comandos disponíveis.</span></button>
+      <button class="tile" data-term="pessoas"><b>♙ Pessoas</b><span>Pesquisas permitidas em fontes públicas.</span></button>
+      <button class="tile" data-term="empresas"><b>▦ Empresas</b><span>Cadastros e informações empresariais públicas.</span></button>
+      <button class="tile" data-term="endereços"><b>⌖ Endereços</b><span>Ruas, bairros e locais públicos.</span></button>
+      <button class="tile" data-term="veículos"><b>▣ Veículos</b><span>Use apenas consultas autorizadas e oficiais.</span></button>
+      <button class="tile" data-term="internet"><b>◎ Internet</b><span>Sites e páginas públicas.</span></button>
+    </div>
+  </section>
+  <aside class="safe"><strong>Uso responsável</strong><br>Use fontes públicas e oficiais. Não utilize o app para obter dados sigilosos, invadir contas ou localizar pessoas para assédio. Esta interface é um ponto de entrada visual; ela não cria novas bases de dados nem substitui os comandos já configurados no bot.</aside>
+  <div class="footer">Baba Yaga | Detetive • Mini App</div>
+</main>
+<script>
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+function sendTerm(value){
+  const term = (value || "").trim();
+  if(!term) return;
+  if(tg && typeof tg.sendData === "function"){
+    tg.sendData(term);
+  } else {
+    const username = "Babayagaa157_bot";
+    window.location.href = "https://t.me/" + username + "?start=" + encodeURIComponent("pesquisa_" + term.slice(0,50));
+  }
+}
+document.getElementById("searchForm").addEventListener("submit", e=>{e.preventDefault();sendTerm(document.getElementById("term").value)});
+document.querySelectorAll("[data-term]").forEach(b=>b.addEventListener("click",()=>sendTerm(b.dataset.term)));
+</script>
+</body>
+</html>
